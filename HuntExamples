@@ -1,0 +1,15 @@
+# Couple hunting examples
+
+$Dir = Get-ChildItem $env:USERPROFILE -Recurse
+$List = $Dir | where {$_.Extension -eq ".pdf"}
+$List | Format-Table FullName,LastWriteTime
+
+
+$wmiQuery = Get-WmiObject -Class Win32_Process -ComputerName . -ErrorAction Stop
+$Users = $wmiQuery.getowner().user | Select-Object -Unique
+$Users
+
+$cimQuery = (Get-CimInstance Win32_LoggedOnUser -ComputerName .).Antecedent.name |Select-Object -Unique
+$cimQuery
+
+Get-WmiObject -Class Win32_Share -ComputerName SOMEPC1
