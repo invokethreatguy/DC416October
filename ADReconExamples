@@ -1,0 +1,28 @@
+# ActiveDirectory Stuff
+
+[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+
+
+
+Get-ADUser -Filter * | select UserPrincipalName,SID,Name,SamAccountName,DistinguishedName
+
+
+
+$adsi = {
+        $adsiSearcher = ([adsisearcher]"objectclass=organizationalunit")
+        $adsiSearcher.PropertiesToLoad.AddRange("CanonicalName")
+        $adsiSearcher.FindAll().Properties.canonicalname
+        }
+Invoke-Command -ScriptBlock $adsi
+
+
+
+$Searcher = [adsisearcher]"(&(objectCategory=person)(objectClass=User))"
+foreach ($user in $($Searcher.FindAll())){
+    New-Object -TypeName PSObject -Property @{
+        "UserName"=$user.properties.samaccountname
+        "DisplayName"=$user.properties.displayname
+        "UPN"=$user.properties.userprincipalname
+        "CN"=$user.Properties.adspath
+    } | Format-Table -AutoSize -Wrap
+}
