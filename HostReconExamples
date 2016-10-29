@@ -1,0 +1,15 @@
+# Basic recon one-liners with PowerShell and WMI
+
+Get-WmiObject -Namespace root\SecurityCenter2 -Class AntiVirusProduct | select displayName 
+
+Get-WmiObject -Class Win32_OperatingSystem | select caption,BuildNumber,Version 
+
+Get-WmiObject -Class Win32_Process  | select ProcessName,ProcessId | Select-String calc
+
+Get-Service | Where-Object {$_.Status -eq "running"} | select Name,DisplayName
+
+Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | select DisplayName,DisplayVersion
+
+Get-WmiObject -Class Win32_Processor | select systemname,numberOfCores,NumberOfLogicalProcessors
+
+Get-NetIPConfiguration
