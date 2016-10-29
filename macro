@@ -1,0 +1,13 @@
+Sub Auto_Close()
+
+    Call BadThing
+
+End Sub
+
+
+Sub BadThing()
+    Dim c As String
+    c = Chr(34) & "calc.exe" & Chr(34)
+    Set s = CreateObject("Wscript.Shell")
+    s.Run c, 0
+End Sub
