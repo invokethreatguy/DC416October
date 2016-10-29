@@ -1,0 +1,2 @@
+New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name PersistCalc -PropertyType String -Value `
+"C:\Windows\System32\calc.exe"
